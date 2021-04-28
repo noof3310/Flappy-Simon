@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI scoreText;
     private static GameManager instance = null;
     public static GameManager Instance
     {
@@ -32,6 +34,7 @@ public class GameManager : MonoBehaviour
     public void AddOnePoint()
     {
         playerScore++;
+        scoreText.SetText(playerScore.ToString());
         Debug.Log(playerScore);
     }
 
