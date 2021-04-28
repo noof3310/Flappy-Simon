@@ -1,28 +1,14 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI scoreText;
-    private static GameManager instance = null;
-    public static GameManager Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                GameObject singleton = new GameObject();
-                instance = singleton.AddComponent<GameManager>();
-                singleton.name = instance.GetType().Name;
-            }
-
-            return instance;
-        }
-
-        private set { instance = value; }
-    }
+    [SerializeField]
+    private TextMeshProUGUI scoreText = default;
+    [SerializeField]
+    private GameObject result = default;
 
     private int playerScore = 0;
     public int PlayerScore
@@ -30,30 +16,14 @@ public class GameManager : MonoBehaviour
         get { return playerScore; }
         set { playerScore = value; }
     }
-
+    private void Awake()
+    {
+        result.SetActive(false);
+    }
     public void AddOnePoint()
     {
         playerScore++;
         scoreText.SetText(playerScore.ToString());
-        Debug.Log(playerScore);
-    }
-
-    private void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-        }
-
-        DontDestroyOnLoad(this);
-    }
-
-    public static bool HasInstance { get { return instance != null; } }
-
-    public void Destroy()
-    {
-        instance = null;
-        Destroy(gameObject);
     }
 
     public void Pause()
@@ -69,13 +39,15 @@ public class GameManager : MonoBehaviour
     public void ResetGame()
     {
         playerScore = 0;
-        Debug.Log("Reset");
-        StartCoroutine(LoadSceneAsync("Game"));
+        Resume();
+        //TODO: change to "Game", if you complete connect the gameobject.
+        StartCoroutine(LoadSceneAsync("Game 1"));
     }
 
     public void StopGame()
     {
-        Debug.Log("Stop");
+        Pause();
+        result.SetActive(true);
     }
 
     public static IEnumerator LoadSceneAsync(string name)

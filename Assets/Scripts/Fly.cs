@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Fly : MonoBehaviour
 {
+    [SerializeField]
+    AudioSource jump = default;
+
     public float velocity = 1;
     private Rigidbody2D rb;
 
@@ -16,10 +17,12 @@ public class Fly : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)){
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+        {
             //Jump
             rb.velocity = Vector2.up * velocity;
+            jump.Play();
         }
-        
+
     }
 }
