@@ -6,6 +6,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text scoreText = default;
     [SerializeField]
+    private Text highScoreText = default;
+    [SerializeField]
     private GameObject result = default;
 
     public void ActiveResult()
@@ -16,6 +18,11 @@ public class UIManager : MonoBehaviour
     public void SetScore(int value)
     {
         scoreText.text = value.ToString();
+    }
+
+    public void SetHighscore(int value)
+    {
+        highScoreText.text = value.ToString();
     }
 
     public void Replay()

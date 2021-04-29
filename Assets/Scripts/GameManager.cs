@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
         get { return isPlaying; }
         set { isPlaying = value; }
     }
+    public float currentGameSpeed = 1f;
     private int playerScore = 0;
     public int PlayerScore
     {
@@ -62,8 +63,9 @@ public class GameManager : MonoBehaviour
     public void AddOnePoint()
     {
         playerScore++;
-
         uiMangement.SetScore(playerScore);
+        currentGameSpeed *= 1.02f;
+        Time.timeScale = currentGameSpeed;
     }
 
     public void Pause()
@@ -75,12 +77,13 @@ public class GameManager : MonoBehaviour
     public void Resume()
     {
         isPlaying = true;
-        Time.timeScale = 1f;
+        Time.timeScale = currentGameSpeed;
     }
 
     public void ResetGame()
     {
         playerScore = 0;
+        currentGameSpeed = 1f;
         Resume();
         StartCoroutine(LoadSceneAsync("Game 1"));
     }
@@ -88,6 +91,11 @@ public class GameManager : MonoBehaviour
     public void StopGame()
     {
         Pause();
+        if (playerScore > PlayerPrefs.GetInt("Highscore"))
+        {
+            PlayerPrefs.SetInt("Highscore", playerScore);
+        }
+        uiMangement.SetHighscore(PlayerPrefs.GetInt("Highscore"));
         uiMangement.ActiveResult();
     }
 
