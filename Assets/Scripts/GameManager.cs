@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         playerScore = 0;
         currentGameSpeed = 1f;
         Resume();
-        StartCoroutine(LoadSceneAsync("Game 1"));
+        StartCoroutine(LoadSceneAsync("Game"));
     }
 
     public void StopGame()
