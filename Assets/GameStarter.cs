@@ -1,28 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStarter : MonoBehaviour
 {
-    private GameManager gameManager = default;
-    private bool isPlay = false;
-    [SerializeField] GameObject gameStart;
+    [SerializeField]
+    GameObject gameStart = default;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-        gameManager.Pause();
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if ( !isPlay && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) )
+        if (!GameManager.Instance.IsStart)
         {
-            isPlay = true;
-            gameManager.Resume();
-            gameStart.SetActive(false);
+            if (!gameStart.activeSelf)
+            {
+                gameStart.SetActive(true);
+            }
+
+            if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))
+            {
+                gameStart.SetActive(false);
+                GameManager.Instance.Resume();
+                GameManager.Instance.IsStart = true;
+                GameManager.Instance.IsPlaying = true;
+            }
         }
+
     }
 }

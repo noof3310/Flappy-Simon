@@ -19,9 +19,12 @@ public class Fly : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
         {
-            //Jump
             rb.velocity = Vector2.up * velocity;
-            jump.Play();
+
+            if (GameManager.Instance.IsPlaying)
+            {
+                jump.Play();
+            }
         }
 
     }

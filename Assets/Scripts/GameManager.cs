@@ -1,38 +1,80 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI scoreText = default;
-    [SerializeField]
-    private GameObject result = default;
-
+    private bool isStart = false;
+    public bool IsStart
+    {
+        get { return isStart; }
+        set { isStart = value; }
+    }
+    private bool isPlaying = false;
+    public bool IsPlaying
+    {
+        get { return isPlaying; }
+        set { isPlaying = value; }
+    }
     private int playerScore = 0;
     public int PlayerScore
     {
         get { return playerScore; }
         set { playerScore = value; }
     }
+
+    private static GameManager instance = null;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>();
+            }
+            return instance;
+        }
+    }
+
+    private UIManager uiManager = default;
+    private UIManager uiMangement
+    {
+        get
+        {
+
+            if (uiManager == null)
+            {
+                uiManager = FindObjectOfType<UIManager>();
+            }
+            return uiManager;
+        }
+    }
     private void Awake()
     {
-        result.SetActive(false);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(this);
     }
     public void AddOnePoint()
     {
         playerScore++;
-        scoreText.SetText(playerScore.ToString());
+
+        uiMangement.SetScore(playerScore);
     }
 
     public void Pause()
     {
+        isPlaying = false;
         Time.timeScale = 0;
     }
 
     public void Resume()
     {
+        isPlaying = true;
         Time.timeScale = 1f;
     }
 
@@ -40,14 +82,13 @@ public class GameManager : MonoBehaviour
     {
         playerScore = 0;
         Resume();
-        //TODO: change to "Game", if you complete connect the gameobject.
         StartCoroutine(LoadSceneAsync("Game 1"));
     }
 
     public void StopGame()
     {
         Pause();
-        result.SetActive(true);
+        uiMangement.ActiveResult();
     }
 
     public static IEnumerator LoadSceneAsync(string name)
