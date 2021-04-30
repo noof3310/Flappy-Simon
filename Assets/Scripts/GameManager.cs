@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     {
         playerScore++;
         uiMangement.SetScore(playerScore);
-        currentGameSpeed *= 1.02f;
+        currentGameSpeed += 0.025f;
         Time.timeScale = currentGameSpeed;
     }
 
